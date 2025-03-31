@@ -41,7 +41,7 @@
                 left: 50%;
                 transform: translate(-50%, -50%);
                 background-color: #c1c5ff;
-                color: #1c17a0;
+                color: #0c0870;
                 padding: 30px;
                 border-radius: 10px;
                 width: 300px;
@@ -70,8 +70,8 @@
             }
 
             .back {
-                background-color: #ececff;
-                color: 1e029c;
+                background-color: #ffffff;
+                color: #1e029c;
             }
 
             .center {
@@ -256,27 +256,28 @@
         <div class = "container">
             <div class = "left">
                 <h2> Enter Your Medication Schedule </h2>
-                    <p> As you fill in your medication into each compartment <i> Medi Jackpot</i>, please enter
-                        the date and time you would like to be reminded to take the medication at. Also, please add the effect the medication has on the user. </p> 
-                    <p> Each compartment has a small number at the bottom, which represents the corresponding compartment number. </i> </p>
+                    <p> As you fill in your medication into each compartment in <i> Medi Jackpot</i>, please enter
+                        the date and time you would like to be reminded to take the medication at. 
+                        You can also enter the name of the medication and any side effects you would like to track. </p>
 
-                        <label> Compartment Number (1-14) : </label>
+                        <h3> Compartment Number (1-14) : </h3>
+                        <p><i> At the bottom of each medication compartment on Medi Jackpot, there is a small number </i> </p>
                         <input type = "number" id="compartment" name="compartment number" min = "0" max = "14" required> <br>
                         <p></p>
 
-                        <label> Date : </label>
+                        <h3> Date : </h3>
                         <input type = "date" id="date" name="date" required> <br>
                         <p></p>
 
-                        <label> Time : </label>
+                        <h3> Time : </h3>
                         <input type = "time" id="time" name="time" required> <br>
                         <p></p>
 
-                        <label> Medication Name <i> (if applicable) </i> : </label>
+                        <h3> Medication Name : </h3>
                         <input type = "text" id="medication" name="medication"> <br>
                         <p></p>
 
-                        <label> Medication Effect </label>
+                        <h3> Medication Effects <i>(if applicable) </i> :</h3>
                         <input type = "text" id="effect" name="effect" required> <br>
                         <p></p>
 
@@ -310,7 +311,7 @@
         </div>   
         <div class = "overlay" id="overlay">
             <div class = "modal" id="mainModal">
-                <h1 class = "center"> we got your schedule! </h2>
+                <h1 class = "center"> We got your schedule! </h2>
                 <p> Before we send off your schedule, please enter your current date and time. 
                     This is important to make sure <i> Medi Jackpot</i> is working in the same time as you!</p>
                 
@@ -320,7 +321,8 @@
     
                     <label> Current Time : </label>
                     <input type = "time" id="current_time" name="current_time" required> <br>
-                    <p></p>
+                    <p> </p>
+                    <p> </p>
                 
                     <p> Are you ready to submit your medication schedule?</p>
 
