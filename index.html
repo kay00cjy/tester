@@ -218,6 +218,8 @@
                 return a.compartment - b.compartment;
             });
 
+            showSuccessModal();
+
         }
 
         function openMainModal() {
@@ -306,7 +308,7 @@
             </div>
 
         </div>   
-        <div class = "overlay" id="overlay">
+        <div class = "overlay" id="overlay"> </div>
             <div class = "modal" id="mainModal">
                 <h1 class = "center"> We got your schedule! </h2>
                 <p> Before we send off your schedule, please enter your current date and time. 
@@ -337,6 +339,5 @@
                   <button class="back" onclick="closeModals()">Got it!</button>
                 </div>
             </div>
-        </div>
     
         </body>
