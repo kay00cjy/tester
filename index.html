@@ -218,10 +218,6 @@
                 return a.compartment - b.compartment;
             });
 
-            document.getElementById("mainModal").style.display = "block";
-            document.getElementById("overlay").style.display = "block";
-            document.querySelector(".mainPage").classList.add("blur");
-            document.body.classList.add("modal-active");
         }
 
         function openMainModal() {
@@ -234,6 +230,7 @@
         function showSuccessModal() {
             document.getElementById("mainModal").style.display = "none";
             document.getElementById("successModal").style.display = "block";
+            document.querySelector(".mainPage").classList.remove("blur");
         }
 
         function closeModals() {
@@ -327,7 +324,7 @@
                     <p> Are you ready to submit your medication schedule?</p>
 
                     <div class = "modal-buttons">
-                    <button class = "success" id = "submit" onclick = "sendData()"> Submit! </button>
+                    <button class = "success" id = "submit" onclick = "sendData(); showSuccessModal();"> Submit! </button>
                     <button class = "back" onclick = "closeModals()"> Go Back </button>
                 </div>
             </div>
