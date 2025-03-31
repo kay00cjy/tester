@@ -6,7 +6,7 @@
         <style>
             body {
                 font-family: 'Nunito', sans-serif;
-                background-color: #f0f0f0;
+                background-color: #cfd6ff;
                 color: #181717;
                 margin: 0;
                 padding: 20px;
@@ -24,7 +24,7 @@
                 border-bottom: 1px solid #ddd;
             }
             th {
-                background-color: #a2aeef;
+                background-color: #8b9af0;
                 color: white;
             }
         </style>
@@ -156,10 +156,10 @@
     <body>
         <!-- interactive website here! visit the website using https://kay00cjy.github.io/medicaladherence.github.io/ -->
         <h1> My Medication Tracker</h1>
-        <h2> Welcome to My Medication Tracker! </h2>
+        <h2> Welcome to <i><b>My Medication Tracker!</b></i> </h2>
         <p> My Medication Tracker is a web application desgined for users to track their medication schedule, 
             while using <i> Medi Jackpot. </i></p>
-        <p>You can easily add, update, and delete medications from your schedule for up to <b> 14 dosages </b>. </p>
+        <p>You can easily add, update, and delete medications from your schedule for up to <b> 14 dosages</b>.</p>
 
         <h2> Current Date and Time </h2>
             <p> Please enter your current date and time for system calibration. This is important to make sure 
@@ -173,56 +173,56 @@
                 <input type = "time" id="current_time" name="current_time" required> <br>
                 <p></p>
 
-                import { Button } from "@/components/ui/button"
-
-export default function Component() {
-  return <Button>Button</Button>
-}
-
-
                 <button type = "button" id="calibrate" onclick = "calibration()"> Submit Current Date and Time </button>
 
-        <h2> Enter Your Medication Schedule Here! </h2>
-            <p> As you fill in your medication into each compartment <i> Medi Jackpot</i>, please enter
-                the date and time you would like to be reminded to take the medication at. Also, please add the effect the medication has on the user. </p> 
-            <p> Each compartment has a small number at the bottom, which represents the corresponding compartment number. </i> </p>
 
-                <label> Compartment Number (1-14) : </label>
-                <input type = "number" id="compartment" name="compartment number" min = "0" max = "14" required> <br>
-                <p></p>
+        <div class = "container">
+            <div class = "column left">
+                <h2> Enter Your Medication Schedule Here! </h2>
+                    <p> As you fill in your medication into each compartment <i> Medi Jackpot</i>, please enter
+                        the date and time you would like to be reminded to take the medication at. Also, please add the effect the medication has on the user. </p> 
+                    <p> Each compartment has a small number at the bottom, which represents the corresponding compartment number. </i> </p>
 
-                <label> Date : </label>
-                <input type = "date" id="date" name="date" required> <br>
-                <p></p>
+                        <label> Compartment Number (1-14) : </label>
+                        <input type = "number" id="compartment" name="compartment number" min = "0" max = "14" required> <br>
+                        <p></p>
 
-                <label> Time : </label>
-                <input type = "time" id="time" name="time" required> <br>
-                <p></p>
+                        <label> Date : </label>
+                        <input type = "date" id="date" name="date" required> <br>
+                        <p></p>
 
-                <label> Medication Name : <i> (if applicable) </i> : </label>
-                <input type = "text" id="medication" name="medication"> <br>
-                <p></p>
+                        <label> Time : </label>
+                        <input type = "time" id="time" name="time" required> <br>
+                        <p></p>
 
-                <label> Medication Effect </label>
-                <input type = "text" id="effect" name="effect" required> <br>
-                <p></p>
+                        <label> Medication Name : <i> (if applicable) </i> : </label>
+                        <input type = "text" id="medication" name="medication"> <br>
+                        <p></p>
 
-                <button type = "button" id="add" onclick = "addToTable()"> Add Medication to your Schedule </button>
+                        <label> Medication Effect </label>
+                        <input type = "text" id="effect" name="effect" required> <br>
+                        <p></p>
 
-        <h2> Your Medication Schedule </h2>
-            <p> Below is your medication schedule. Please confirm that all details are correct. </p>
+                        <button type = "button" id="add" onclick = "addToTable()"> Add Medication to your Schedule </button>
 
-            <table border = "1" id ="scheduleTable">
-                <tr>
-                    <th> Compartment Number </th>
-                    <th> Date </th>
-                    <th> Time </th>
-                    <th> Medication Name </th>
-                    <th> Medication Effect </th>
-                </tr>
-            </table>
+            </div>
 
-            <p></p>
+            <div class = "column right">
+                <h2> Your Medication Schedule </h2>
+                    <p> Below is your medication schedule. Please confirm that all details are correct. </p>
+
+                        <table border = "1" id ="scheduleTable">
+                            <tr>
+                                <th> Compartment Number </th>
+                                <th> Date </th>
+                                <th> Time </th>
+                                <th> Medication Name </th>
+                                <th> Medication Effect </th>
+                            </tr>
+                        </table>
+            </div>
+        </div> 
+        
 
         <h3> Send Data to <i> Medi Jackpot</i>!</h3>
             <button type = "button" id="submit" onclick = "sendData()"> Submit Schedule </button>
