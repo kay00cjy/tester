@@ -104,6 +104,12 @@
                 text-size-adjust: 50px;
             }
 
+            .blur {
+                filter: blur(5px);
+                pointer-events: none;
+                user-select: none;
+            }
+
         </style>
     </head>
 
@@ -211,42 +217,32 @@
             scheduleData.sort(function(a, b) {
                 return a.compartment - b.compartment;
             });
-
-            // sends data to Python server
-            fetch("http://localhost:5000/sendData", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(scheduleData)
-            }).then(response => response.text()).then(data =>{
-                alert("Schedule successfully sent! : " + data);
-            }).catch(error => {
-                alert("Error sending your schedule! Is your Python server connected?");
-            });
         }
 
         function openMainModal() {
-      document.getElementById("mainModal").style.display = "block";
-      document.getElementById("overlay").style.display = "block";
-      document.body.classList.add("modal-active");
-    }
+            document.getElementById("mainModal").style.display = "block";
+            document.getElementById("overlay").style.display = "block";
+            document.querySelector(".mainPage").classList.add("blur");
+            document.body.classList.add("modal-active");
+        }
 
-    function showSuccessModal() {
-      document.getElementById("mainModal").style.display = "none";
-      document.getElementById("successModal").style.display = "block";
-    }
+        function showSuccessModal() {
+            document.getElementById("mainModal").style.display = "none";
+            document.getElementById("successModal").style.display = "block";
+        }
 
-    function closeModals() {
-      document.getElementById("mainModal").style.display = "none";
-      document.getElementById("successModal").style.display = "none";
-      document.getElementById("overlay").style.display = "none";
-      document.body.classList.remove("modal-active");
-    }
+        function closeModals() {
+            document.getElementById("mainModal").style.display = "none";
+            document.getElementById("successModal").style.display = "none";
+            document.getElementById("overlay").style.display = "none";
+            document.querySelector(".mainPage").classList.remove("blur");
+            document.body.classList.remove("modal-active");
+        }
 
     </script>
     <body>
         <!-- interactive website here! visit the website using https://kay00cjy.github.io/medicaladherence.github.io/ -->
+        <div class = "mainPage">
         <h2> MEDI JACKPOT</h1>
         <h1 class = "center"> Welcome to <i><b>My Medication Tracker!</b></i> </h2>
         <p class = "center"> Staying onto of your medication schedule has never been so easy! Inuput your medication schedule here while 
@@ -306,6 +302,7 @@
                 <button class = "center button" id="submit" onclick = "openMainModal()"> Save Schedule </button>
             </div>
 
+        </div>   
         <div class = "overlay" id="overlay">
             <div class = "modal" id="mainModal">
                 <h1 class = "center"> we got your schedule! </h2>
