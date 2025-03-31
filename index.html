@@ -217,6 +217,11 @@
             scheduleData.sort(function(a, b) {
                 return a.compartment - b.compartment;
             });
+
+            document.getElementById("mainModal").style.display = "block";
+            document.getElementById("overlay").style.display = "block";
+            document.querySelector(".mainPage").classList.add("blur");
+            document.body.classList.add("modal-active");
         }
 
         function openMainModal() {
