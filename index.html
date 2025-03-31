@@ -230,9 +230,10 @@
         }
 
         function showSuccessModal() {
+            closeModals();
             document.getElementById("successModal").style.display = "none";
             document.getElementById("successModal").style.display = "block";
-            document.querySelector(".mainPage").classList.remove("blur");
+            document.querySelector(".mainPage").classList.add("blur");
         }
 
         function closeModals() {
