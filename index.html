@@ -103,12 +103,6 @@
                 cursor: pointer;
                 text-size-adjust: 20px;
             }
-            
-            .title {
-                color: #ffffff;
-                font-size: 30px;
-                font-weight: bold;
-            }
 
         </style>
     </head>
@@ -127,7 +121,7 @@
 
 
             // check if the user has entered all fields
-            if (compartment == "" || date == "" || time == "" || name == "") {
+            if (compartment == "" || date == "" || time == "") {
                 alert("Please fill in all fields before adding to your schedule.");
                 return;
             }
@@ -197,10 +191,7 @@
                 return;
             }
 
-            // clear compartment 0 and add in current time and date into that cell for data accesss
-            scheduleData = scheduleData.filter(entry => entry.compartment != 0);
-            scheduleData.push({compartment: 0, date: currentDate, time: currentTime});
-            alert("Current date and time successfully saved for calibration!");
+            
         }
 
         function sendData() {
@@ -263,7 +254,7 @@
 
         <div class = "container">
             <div class = "left">
-                <h2 class = "title"> Enter Your Medication Schedule </h2>
+                <h2> Enter Your Medication Schedule </h2>
                     <p> As you fill in your medication into each compartment <i> Medi Jackpot</i>, please enter
                         the date and time you would like to be reminded to take the medication at. Also, please add the effect the medication has on the user. </p> 
                     <p> Each compartment has a small number at the bottom, which represents the corresponding compartment number. </i> </p>
@@ -289,6 +280,7 @@
                         <p></p>
 
                         <button class = "button" id="add" onclick = "addToTable()"> Add Medication to your Schedule </button>
+                        <p></p>
 
             </div>
 
