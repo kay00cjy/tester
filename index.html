@@ -7,7 +7,7 @@
             body {
                 font-family: 'Nunito', sans-serif;
                 background-color: #f4f6ff;
-                color: #181717;
+                color: #10024f;
                 margin: 0;
                 padding: 20px;
             }
@@ -24,8 +24,54 @@
                 border-bottom: 1px solid #ddd;
             }
             th {
-                background-color: #6a66ef;
+                background-color: #514dd1;
                 color: white;
+            }
+
+            body.modal-open {
+                filter: blur(5px);
+                pointer-events: none;
+                user-select: none;
+            }
+
+            .modal {
+                display: none;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: #c1c5ff;
+                color: #1c17a0;
+                padding: 30px;
+                border-radius: 10px;
+                width: 300px;
+                text-align: center;
+                z-index: 999;
+                box-shadow: 0 0 15px #2a09e64d;
+            }
+
+            .modal-buttons {
+                margin-top: 20px;
+                display: flex;
+                justify-content: space-around;
+            }
+
+            .modal button {
+                padding: 10px 15px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-weight: bold;
+            }
+
+            .success {
+                background-color: #1e029c;
+                color: white;
+            }
+
+            .back {
+                background-color: #ececff;
+                color: 1e029c;
             }
 
             .center {
@@ -42,30 +88,26 @@
                 word-wrap: break-word;
                 overflow-wrap: break-word;
                 justify-content: space-between;
-                background-color: #ced1f7;
+                background-color: #e1e3fc;
                 padding: 10px;
                 border-radius: 10px;
                 margin: 40px 0;
             }
 
-            .column right {
-                display: flex;
-                word-wrap: break-word;
-                overflow-wrap: break-word;
-                justify-content: space-between;
-                background-color: #ced1f7;
-                padding: 10px;
-                border-radius: 10px;
-                margin: 20px 0;
-            }
-
             .button {
-                background-color: #e3e7fe;
-                color: #1e029c;
+                background-color: #514dd1;
+                color: #ececff;
                 padding: 10px 20px;
                 border: none;
                 border-radius: 5px;
                 cursor: pointer;
+                text-size-adjust: 20px;
+            }
+            
+            .title {
+                color: #ececff;
+                font-size: 30px;
+                font-weight: bold;
             }
 
         </style>
@@ -85,7 +127,7 @@
 
 
             // check if the user has entered all fields
-            if (compartment == "" || date == "" || time == "" || effect == "") {
+            if (compartment == "" || date == "" || time == "" || name == "") {
                 alert("Please fill in all fields before adding to your schedule.");
                 return;
             }
@@ -193,33 +235,35 @@
             });
         }
 
+        function openMainModal() {
+      document.getElementById("mainModal").style.display = "block";
+      document.getElementById("overlay").style.display = "block";
+      document.body.classList.add("modal-active");
+    }
+
+    function showSuccessModal() {
+      document.getElementById("mainModal").style.display = "none";
+      document.getElementById("successModal").style.display = "block";
+    }
+
+    function closeModals() {
+      document.getElementById("mainModal").style.display = "none";
+      document.getElementById("successModal").style.display = "none";
+      document.getElementById("overlay").style.display = "none";
+      document.body.classList.remove("modal-active");
+    }
+
     </script>
     <body>
         <!-- interactive website here! visit the website using https://kay00cjy.github.io/medicaladherence.github.io/ -->
         <h2> MEDI JACKPOT</h1>
         <h1 class = "center"> Welcome to <i><b>My Medication Tracker!</b></i> </h2>
-        <p class = "center"> My Medication Tracker is a web application desgined for users to track their medication schedule, 
-            while using <i> Medi Jackpot. </i></p>
-        <p class = "center">You can easily add, update, and delete medications from your schedule for up to <b> 14 dosages</b>.</p>
-
-        <h2> Current Date and Time </h2>
-            <p> Please enter your current date and time for system calibration. This is important to make sure 
-                <i> Medi Jackpot</i> is working in the same time as your medication schedule! </p>
-
-                <label> Current Date : </label>
-                <input type = "date" id="current_date" name="current_date" required> <br>
-                <p></p>
-
-                <label> Current Time : </label>
-                <input type = "time" id="current_time" name="current_time" required> <br>
-                <p></p>
-
-                <button type = "button" id="calibrate" onclick = "calibration()"> Submit Current Date and Time </button>
-
+        <p class = "center"> Staying onto of your medication schedule has never been so easy! Inuput your medication schedule here while 
+            setting up your <i>Medi Jackpot</i>! </p>
 
         <div class = "container">
             <div class = "left">
-                <h2> Enter Your Medication Schedule Here! </h2>
+                <h2 class = "title"> Enter Your Medication Schedule </h2>
                     <p> As you fill in your medication into each compartment <i> Medi Jackpot</i>, please enter
                         the date and time you would like to be reminded to take the medication at. Also, please add the effect the medication has on the user. </p> 
                     <p> Each compartment has a small number at the bottom, which represents the corresponding compartment number. </i> </p>
@@ -250,7 +294,7 @@
 
             <div class = "right">
                 <h2> Your Medication Schedule </h2>
-                    <p> Below is your medication schedule. Please confirm that all details are correct. </p>
+                    <p> Preview your medication schedule below. Please confirm that all details are correct. </p>
 
                         <table border = "1" id ="scheduleTable">
                             <tr>
@@ -265,6 +309,37 @@
         </div> 
         
 
-        <h3 class = "center"> Send Data to <i> Medi Jackpot</i>!</h3>
-            <button class = "center" class = "button" id="submit" onclick = "sendData()"> Submit Schedule </button>
-    </body>
+        <h3 class = "center"> Done? Click <i> Save Schedule</i>!</h3>
+            <button class = "center button" id="submit" onclick = "open()"> Save Schedule </button>
+            
+            <div class = "modal" id="modal">
+                <h1 class = "center"> we got your schedule! </h2>
+                <p> Before we send off your schedule, please enter your current date and time. 
+                    This is important to make sure <i> Medi Jackpot</i> is working in the same time as you!</p>
+                
+                    <label> Current Date : </label>
+                    <input type = "date" id="current_date" name="current_date" required> <br>
+                    <p></p>
+    
+                    <label> Current Time : </label>
+                    <input type = "time" id="current_time" name="current_time" required> <br>
+                    <p></p>
+                
+                    <p> Are you ready to submit your medication schedule?</p>
+
+                    <div class = "modal-buttons">
+                    <button class = "success" id = "submit" onclick = "sendData()"> Submit! </button>
+                    <button class = "back" onclick = "closeWindow()"> Go Back </button>
+                </div>
+            </div>
+
+            <div class="modal" id="successModal">
+                <h1 class="center"> <b>Success!</b></h1>
+                <p>Your medication schedule has successfully been loaded into <i>Medi Jackpot</i>!
+                    You are now ready to start tracking your medication!</p>
+                <div class="modal-buttons">
+                  <button class="back" onclick="closeModals()">Got it!</button>
+                </div>
+            </div>
+    
+        </body>
