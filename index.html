@@ -32,8 +32,13 @@
                 text-align: center;
             }
 
-            .column left {
+            .container {
                 display: flex;
+                gap: 20px;
+            }
+
+            .left, .right {
+                flex: 1;
                 word-wrap: break-word;
                 overflow-wrap: break-word;
                 justify-content: space-between;
@@ -191,11 +196,11 @@
     </script>
     <body>
         <!-- interactive website here! visit the website using https://kay00cjy.github.io/medicaladherence.github.io/ -->
-        <h1> My Medication Tracker</h1>
-        <h2 class = "center"> Welcome to <i><b>My Medication Tracker!</b></i> </h2>
-        <p> My Medication Tracker is a web application desgined for users to track their medication schedule, 
+        <h2> MEDI JACKPOT</h1>
+        <h1 class = "center"> Welcome to <i><b>My Medication Tracker!</b></i> </h2>
+        <p class = "center"> My Medication Tracker is a web application desgined for users to track their medication schedule, 
             while using <i> Medi Jackpot. </i></p>
-        <p>You can easily add, update, and delete medications from your schedule for up to <b> 14 dosages</b>.</p>
+        <p class = "center">You can easily add, update, and delete medications from your schedule for up to <b> 14 dosages</b>.</p>
 
         <h2> Current Date and Time </h2>
             <p> Please enter your current date and time for system calibration. This is important to make sure 
