@@ -2,6 +2,31 @@
 <html>
     <head>
         <title>My Medication Tracker</title>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
+        <style>
+            body {
+                font-family: 'Nunito', sans-serif;
+                background-color: #f0f0f0;
+                color: #333;
+                margin: 0;
+                padding: 20px;
+            }
+            h1, h2, h3 {
+                color: #4CAF50;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            th, td {
+                padding: 10px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+            th {
+                background-color: #4CAF50;
+                color: white;
+            }
     </head>
 
     <script>
@@ -146,6 +171,13 @@
                 <label> Current Time : </label>
                 <input type = "time" id="current_time" name="current_time" required> <br>
                 <p></p>
+
+                import { Button } from "@/components/ui/button"
+
+export default function Component() {
+  return <Button>Button</Button>
+}
+
 
                 <button type = "button" id="calibrate" onclick = "calibration()"> Submit Current Date and Time </button>
 
