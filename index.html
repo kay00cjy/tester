@@ -6,7 +6,7 @@
         <style>
             body {
                 font-family: 'Nunito', sans-serif;
-                background-color: #e3e7fe;
+                background-color: #f4f6ff;
                 color: #181717;
                 margin: 0;
                 padding: 20px;
@@ -24,7 +24,7 @@
                 border-bottom: 1px solid #ddd;
             }
             th {
-                background-color: #4f67ed;
+                background-color: #6a66ef;
                 color: white;
             }
 
@@ -32,13 +32,35 @@
                 text-align: center;
             }
 
-            .container {
+            .column left {
                 display: flex;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
                 justify-content: space-between;
-                background-color: #a5b0f0;
-                padding: 20px;
+                background-color: #b1b5f0;
+                padding: 10px;
                 border-radius: 10px;
                 margin: 20px 0;
+            }
+
+            .column right {
+                display: flex;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                justify-content: space-between;
+                background-color: #b1b5f0;
+                padding: 10px;
+                border-radius: 10px;
+                margin: 20px 0;
+            }
+
+            .button {
+                background-color: #e3e7fe;
+                color: #1e029c;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
             }
 
         </style>
@@ -170,7 +192,7 @@
     <body>
         <!-- interactive website here! visit the website using https://kay00cjy.github.io/medicaladherence.github.io/ -->
         <h1> My Medication Tracker</h1>
-        <h2> Welcome to <i><b>My Medication Tracker!</b></i> </h2>
+        <h2 class = "center"> Welcome to <i><b>My Medication Tracker!</b></i> </h2>
         <p> My Medication Tracker is a web application desgined for users to track their medication schedule, 
             while using <i> Medi Jackpot. </i></p>
         <p>You can easily add, update, and delete medications from your schedule for up to <b> 14 dosages</b>.</p>
@@ -217,7 +239,7 @@
                         <input type = "text" id="effect" name="effect" required> <br>
                         <p></p>
 
-                        <button type = "button" id="add" onclick = "addToTable()"> Add Medication to your Schedule </button>
+                        <button class = "button" id="add" onclick = "addToTable()"> Add Medication to your Schedule </button>
 
             </div>
 
@@ -238,6 +260,6 @@
         </div> 
         
 
-        <h3> Send Data to <i> Medi Jackpot</i>!</h3>
-            <button type = "button" id="submit" onclick = "sendData()"> Submit Schedule </button>
+        <h3 class = "center"> Send Data to <i> Medi Jackpot</i>!</h3>
+            <button class = "button" id="submit" onclick = "sendData()"> Submit Schedule </button>
     </body>
