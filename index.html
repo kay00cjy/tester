@@ -302,9 +302,10 @@
         
 
         <h3 class = "center"> Done? Click <i> Save Schedule </i>!</h3>
-            <button class = "center button" id="submit" onclick = "open()"> Save Schedule </button>
+            <button class = "center button" id="submit" onclick = "openMainModal()"> Save Schedule </button>
             
-            <div class = "modal" id="modal">
+        <div class = "overlay" id="overlay">
+            <div class = "modal" id="mainModal">
                 <h1 class = "center"> we got your schedule! </h2>
                 <p> Before we send off your schedule, please enter your current date and time. 
                     This is important to make sure <i> Medi Jackpot</i> is working in the same time as you!</p>
@@ -321,7 +322,7 @@
 
                     <div class = "modal-buttons">
                     <button class = "success" id = "submit" onclick = "sendData()"> Submit! </button>
-                    <button class = "back" onclick = "closeWindow()"> Go Back </button>
+                    <button class = "back" onclick = "closeModals()"> Go Back </button>
                 </div>
             </div>
 
@@ -333,5 +334,6 @@
                   <button class="back" onclick="closeModals()">Got it!</button>
                 </div>
             </div>
+        </div>
     
         </body>
