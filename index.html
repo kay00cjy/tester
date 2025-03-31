@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My Medication Tracker</title>
+    </head>
+
+    <script>
+        var scheduleData = [];
+
+        function addToTable() {
+            // get table values from input fields
+            var table = document.getElementById("scheduleTable");
+            var compartment = document.getElementById("compartment").value;
+            var date = document.getElementById("date").value;
+            var time = document.getElementById("time").value;
+            var medication = document.getElementById("medication").value;
+            var effect = document.getElementById("effect").value;
+
+
+            // check if the user has entered all fields
+            if (compartment == "" || date == "" || time == "" || effect == "") {
+                alert("Please fill in all fields before adding to your schedule.");
+                return;
+            }
+
+            // check if user has inputted a compartment number outside defined range
+            if (compartment < 1 || compartment > 14){
+                alert("Please select a compartment number within 1-14!");
+                return;
+            }
+
+            // check if compartment is already full
+            var existing = scheduleData.some(entry => entry.compartment === compartment);
+            if (existing) {
+                alert("Error: You already have medication scheduled in this compartment. Please choose a different compartment.");
+                return;
+            }
+
+            // sort existing data by compartment number using an array
+            scheduleData.push({compartment: parseInt(compartment), date: date, time: time, medication: medication, effect: effect});
+            scheduleData.sort(function(a, b) {
+                return a.compartment - b.compartment;
+            });
+
+            updateTable();
+
+            // clear input fields
+            document.getElementById("compartment").value = "";
+            document.getElementById("date").value = "";
+            document.getElementById("time").value = "";
+            document.getElementById("medication").value = "";
+            document.getElementById("effect").value = "";
+
+        }
+
+        function updateTable() {
+            var table = document.getElementById("scheduleTable");
+            table.innerHTML = `
+                <tr>
+                    <th> Compartment Number </th>
+                    <th> Date </th>
+                    <th> Time </th>
+                    <th> Medication Name </th>
+                    <th> Medication Effect </th>
+                </tr>`;
+
+            // add inputted info into a preveiw table
+            scheduleData.forEach(entry => {
+                var row = table.insertRow(-1);
+                row.insertCell(0).innerHTML = entry.compartment;
+                row.insertCell(1).innerHTML = entry.date;
+                row.insertCell(2).innerHTML = entry.time;
+                row.insertCell(3).innerHTML = entry.medication ? entry.medication : "N/A";
+                row.insertCell(4).innerHTML = entry.effect ? entry.effect : "N/A";
+
+            });
+        }
+
+        function calibration() {
+
+            // get current date and time from input fields
+            var currrentDate = document.getElementById("currrent_date").value;
+            var currentTime = document.getElementById("current_time").value;
+
+            // check that user has actually entered a date and time
+            if (currentDate == "" || currentTime == "") {
+                alert("Please enter your current date and time.");
+                return;
+            }
+
+            // clear compartment 0 and add in current time and date into that cell for data accesss
+            scheduleData = scheduleData.filter(entry => entry.compartment != 0);
+            scheduleData.push({compartment: 0, date: currentDate, time: currentTime});
+            alert("Current date and time successfully saved for calibration!");
+        }
+
+        function sendData() {
+            // checks if medication schedule was inputted
+            if (scheduleData.length == 0) {
+                alert("Please add medication to your schedule before submitting.");
+                return;
+            }
+
+            // checks if the current date and time was inputted
+            if(scheduleData.compartment(0) == "") {
+                alert("Please enter your current date and time.");
+                return;
+            }
+
+            // sorts data before sending
+            scheduleData.sort(function(a, b) {
+                return a.compartment - b.compartment;
+            });
+
+            // sends data to Python server
+            fetch("http://localhost:5000/sendData", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(scheduleData)
+            }).then(response => response.text()).then(data =>{
+                alert("Schedule successfully sent! : " + data);
+            }).catch(error => {
+                alert("Error sending your schedule! Is your Python server connected?");
+            });
+        }
+
+    </script>
+    <body>
+        <!-- interactive website here! visit the website using https://kay00cjy.github.io/medicaladherence.github.io/ -->
+        <h1> My Medication Tracker</h1>
+        <h2> Welcome to My Medication Tracker! </h2>
+        <p> My Medication Tracker is a web application desgined for users to track their medication schedule, 
+            while using <i> Medi Jackpot. </i></p>
+        <p>You can easily add, update, and delete medications from your schedule for up to <b> 14 dosages </b>. </p>
+
+        <h2> Current Date and Time </h2>
+            <p> Please enter your current date and time for system calibration. This is important to make sure 
+                <i> Medi Jackpot</i> is working in the same time as your medication schedule! </p>
+
+                <label> Current Date : </label>
+                <input type = "date" id="current_date" name="current_date" required> <br>
+                <p></p>
+
+                <label> Current Time : </label>
+                <input type = "time" id="current_time" name="current_time" required> <br>
+                <p></p>
+
+                <button type = "button" id="calibrate" onclick = "calibration()"> Submit Current Date and Time </button>
+
+        <h2> Enter Your Medication Schedule Here! </h2>
+            <p> As you fill in your medication into each compartment <i> Medi Jackpot</i>, please enter
+                the date and time you would like to be reminded to take the medication at. Also, please add the effect the medication has on the user. </p> 
+            <p> Each compartment has a small number at the bottom, which represents the corresponding compartment number. </i> </p>
+
+                <label> Compartment Number (1-14) : </label>
+                <input type = "number" id="compartment" name="compartment number" min = "0" max = "14" required> <br>
+                <p></p>
+
+                <label> Date : </label>
+                <input type = "date" id="date" name="date" required> <br>
+                <p></p>
+
+                <label> Time : </label>
+                <input type = "time" id="time" name="time" required> <br>
+                <p></p>
+
+                <label> Medication Name : <i> (if applicable) </i> : </label>
+                <input type = "text" id="medication" name="medication"> <br>
+                <p></p>
+
+                <label> Medication Effect </label>
+                <input type = "text" id="effect" name="effect" required> <br>
+                <p></p>
+
+                <button type = "button" id="add" onclick = "addToTable()"> Add Medication to your Schedule </button>
+
+        <h2> Your Medication Schedule </h2>
+            <p> Below is your medication schedule. Please confirm that all details are correct. </p>
+
+            <table border = "1" id ="scheduleTable">
+                <tr>
+                    <th> Compartment Number </th>
+                    <th> Date </th>
+                    <th> Time </th>
+                    <th> Medication Name </th>
+                    <th> Medication Effect </th>
+                </tr>
+            </table>
+
+            <p></p>
+
+        <h3> Send Data to <i> Medi Jackpot</i>!</h3>
+            <button type = "button" id="submit" onclick = "sendData()"> Submit Schedule </button>
+    </body>
