@@ -1,100 +1,133 @@
+// Objective: The following code serves as a testing framework for the computational
+// aspects of the medication reminder system. It is designed to simulate the functionality 
+// of the Arduino code in a C testing interface with a user-input based appraoch, allowing 
+// for easier debugging without the need for hardware components. The code specifically 
+// focuses on the functions "storeSchedule", "conversion", "checkTime", "calc", 
+// and the input for "rotateServo". Each function implemented with the same logic as prior
+// code directly in section, but without the format structure of functions.
+// An additional timer command has been implemented to simulate the elasped time for the search function. 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
 
-#define MAX_COMP 15
-#define ANGLE 11
+// define parameters
+#define MAX_COMP    15          // 14 compartments for medication, 1 compartment for callibration
+#define BUFFER      10000       // max length for incoming serial data
+#define ANGLE       11          // rotation angle to servo motor for each compartment
 
-typedef struct {
-    int compartment;
-    char date[11];    // Format: YYYY-MM-DD
-    char time[6];     // Format: HH:MM
-    char name[50];
-    char effect[100];
-    unsigned long reminderTime; // simulated timestamp
-} ScheduleEntry;
-
-ScheduleEntry schedule[MAX_COMP];
+// create global variables
+ScheduleEntry schedule[MAX_COMP];  // Array to store schedule entries
 int entries = 0;
 
-// Simulate time conversion from date/time strings to a single value
-unsigned long convertToMillis(const char* date, const char* time) {
-    int year, month, day, hour, minute;
-    sscanf(date, "%d-%d-%d", &year, &month, &day);
-    sscanf(time, "%d:%d", &hour, &minute);
-    return ((year * 12 + month) * 31 + day) * 24 * 60 + hour * 60 + minute;
+// create a new datastype to store all entries in Medication Schedule
+typedef struct {
+    int compartment;
+    char date[11];                  // format: YYYY-MM-DD
+    char time[6];                   // format: HH:MM
+    char name[50];                  // medication name
+    char effect[1000];              // medication effect
+    unsigned long reminderTime;     // time (in milliseconds) to take medication
+} ScheduleEntry;
+
+
+// create a function to convert data input to millis()
+unsigned long conversion (char *date, char *time){
+    int year, month, day, hours, minutes;
+
+    // make sure all required fields are inputted by user
+    if (sscanf(date, "%d-%d-%d", &year, &month, &day) != 3) return 0;
+    if (sscanf(time, "%d:%d", &hours, &minutes) != 2) return 0;
+
+    unsigned long dateConvert = (unsigned long)3600000 * 24 * (day + 31 * (month + (12 * year)));
+    unsigned long timeConvert = (unsigned long)3600000 * hours + (unsigned long)60000 * minutes;
+
+    return dateConvert + timeConvert;
+}
+
+int calc(int i) {
+    return ANGLE * schedule[i].compartment; //compartments evenly spaced;
 }
 
 void addEntry() {
+    // variables to store input data
+    int compartment;
+    char buffer[BUFFER]; 
+    char date[11], time[6], name[50], effect[1000];
+
     if (entries >= MAX_COMP) {
         printf("Schedule is full.\n");
         return;
     }
 
-    char buffer[100];
-    int compartment;
-    char date[11], time[6], name[50], effect[100];
-
-    // Get compartment number
-    printf("Enter compartment number (1–14): ");
+    // user input for schedule entry
+    printf("Enter compartment number (1-14): ");
     fgets(buffer, sizeof(buffer), stdin);
     sscanf(buffer, "%d", &compartment);
 
     printf("Enter date (YYYY-MM-DD): ");
     fgets(date, sizeof(date), stdin);
     date[strcspn(date, "\n")] = '\0';
-    getchar(); // clear newline
+    getchar(); 
 
     printf("Enter time (HH:MM): ");
     fgets(time, sizeof(time), stdin);
     time[strcspn(time, "\n")] = '\0';
-    getchar(); // clear newline
+    getchar(); 
 
     printf("Enter medication name: ");
     fgets(name, sizeof(name), stdin);
     name[strcspn(name, "\n")] = '\0';
-    getchar(); // clear newline
+    getchar(); 
 
     printf("Enter medication effect: ");
     fgets(effect, sizeof(effect), stdin);
     effect[strcspn(effect, "\n")] = '\0';
 
+    // store the schedule entry
     ScheduleEntry entry;
     entry.compartment = compartment;
     strncpy(entry.date, date, 10);
     strncpy(entry.time, time, 5);
     strncpy(entry.name, name, 49);
-    strncpy(entry.effect, effect, 99);
-    entry.reminderTime = convertToMillis(date, time);
+    strncpy(entry.effect, effect, 999);
 
-    schedule[entries++] = entry;
+    // Convert date and time to milliseconds for trigger time
+    entry.reminderTime = conversion(date, time);
+    entries++;
 
     printf("Entry stored successfully.\n\n");
 }
 
-void searchAndSimulate() {
+void search() {
+    // timer to measure elapsed time
     LARGE_INTEGER frequency, start, end;
     QueryPerformanceFrequency(&frequency);
 
-    int targetCompartment;
+    // user input to for compartment to search for
+    int target;
     printf("Enter compartment number to search for: ");
-    scanf("%d", &targetCompartment);
-    getchar(); // clear newline
+    scanf("%d", &target);
+    getchar();
 
+    // start timer
     QueryPerformanceCounter(&start);
 
     for (int i = 0; i < entries; i++) {
-        if (schedule[i].compartment == targetCompartment) {
+        if (schedule[i].compartment == target) {
 
+            int rotate = calc(i); 
+
+            // stop timer once found
             QueryPerformanceCounter(&end);
             double elapsedTime = (double)(end.QuadPart - start.QuadPart) * 1000.0 / frequency.QuadPart;
 
-            printf("\nFound matching schedule:\n");
+            printf("\nFound matching compartment:\n");
             printf("Compartment: %d\n", schedule[i].compartment);
             printf("Medication: %s\n", schedule[i].name);
             printf("Effect: %s\n", schedule[i].effect);
-            printf("Rotation angle: %d degrees\n", ANGLE * targetCompartment);
+            printf("Rotation angle: %d degrees\n", rotate);
             printf("Elapsed time to find: %.5f ms\n", elapsedTime);
             return;
         }
@@ -104,20 +137,18 @@ void searchAndSimulate() {
 }
 
 int main() {
-    printf("Medication Scheduler (C Simulation)\n");
-    printf("====================================\n\n");
 
     int numEntries;
     printf("How many entries do you want to input? ");
     scanf("%d", &numEntries);
-    getchar(); // clear newline
+    getchar();
 
     for (int i = 0; i < numEntries; i++) {
         printf("\n--- Entry %d ---\n", i + 1);
         addEntry();
     }
 
-    searchAndSimulate();
+    search();
 
     return 0;
 }
