@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <windows.h>
 
 #define MAX_COMP 15
 #define ANGLE 11
@@ -17,6 +18,7 @@ typedef struct {
 
 ScheduleEntry schedule[MAX_COMP];
 int entries = 0;
+int tik = 0; // Placeholder for time taken to find rotation
 
 // Simulate time conversion from date/time strings to a single value
 unsigned long convertToMillis(const char* date, const char* time) {
@@ -35,25 +37,29 @@ void addEntry() {
     int compartment;
     char date[11], time[6], name[50], effect[100];
 
-    printf("Enter compartment number (1–14): ");
+    printf("Enter compartment number (1-14): ");
     scanf("%d", &compartment);
     getchar(); // clear newline
 
     printf("Enter date (YYYY-MM-DD): ");
     fgets(date, sizeof(date), stdin);
     date[strcspn(date, "\n")] = '\0';
+    getchar(); // clear newline
 
     printf("Enter time (HH:MM): ");
     fgets(time, sizeof(time), stdin);
     time[strcspn(time, "\n")] = '\0';
+    getchar(); // clear newline
 
     printf("Enter medication name: ");
     fgets(name, sizeof(name), stdin);
     name[strcspn(name, "\n")] = '\0';
+    getchar(); // clear newline
 
     printf("Enter medication effect: ");
     fgets(effect, sizeof(effect), stdin);
     effect[strcspn(effect, "\n")] = '\0';
+    getchar(); // clear newline
 
     ScheduleEntry entry;
     entry.compartment = compartment;
@@ -69,23 +75,27 @@ void addEntry() {
 }
 
 void searchAndSimulate() {
+    LARGE_INTEGER frequency, start, end;
+    QueryPerformanceFrequency(&frequency);
+
     int targetCompartment;
     printf("Enter compartment number to search for: ");
     scanf("%d", &targetCompartment);
 
-    clock_t start = clock();
+    QueryPerformanceCounter(&start);
 
     for (int i = 0; i < entries; i++) {
         if (schedule[i].compartment == targetCompartment) {
-            clock_t end = clock();
-            double elapsed = (double)(end - start) / CLOCKS_PER_SEC * 1000;
 
             printf("\nFound matching schedule:\n");
             printf("Compartment: %d\n", schedule[i].compartment);
             printf("Medication: %s\n", schedule[i].name);
             printf("Effect: %s\n", schedule[i].effect);
             printf("Rotation angle: %d degrees\n", ANGLE * targetCompartment);
-            printf("Time taken to search: %.2f ms\n", elapsed);
+
+            QueryPerformanceCounter(&end);
+            double elapsedTime = (double)(end.QuadPart - start.QuadPart) * 1000.0 / frequency.QuadPart;
+            printf("Elapsed time: %.5f ms\n", elapsedTime);
             return;
         }
     }

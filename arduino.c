@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <Arduino.h> 
 
 // define parameters
 #define MAX_COMP    15          // 14 compartments for medication, 1 compartment for callibration
@@ -24,11 +23,11 @@ typedef struct {
     char date[11];                  // format: YYYY-MM-DD
     char time[6];                   // format: HH:MM
     char name[50];                  // medication name
-    char effect[1000]               // medication effect
+    char effect[1000];               // medication effect
     unsigned long reminderTime;     // time (in milliseconds) to take medication
 } ScheduleEntry;
 
-// create a function to read data from serial port
+/** create a function to read data from serial port
 void readSerialData(char *input) {
     int index = 0;
 
@@ -39,7 +38,7 @@ void readSerialData(char *input) {
         input[index++] = c; // stores data  
     }
     input[index] = '\0';  // standard terminator so the program will not blow up
-}
+} */
 
 // create a function for storing schedule entries
 void storeSchedule(char *input) {
@@ -80,7 +79,7 @@ unsigned long conversion (char *date, char *time){
     unsigned long dateConvert = (unsigned long)3600000 * 24 * (day + 31 * (month + (12 * year)));
     unsigned long timeConvert = (unsigned long)3600000 * hours + (unsigned long)60000 * minutes;
 
-    return dateConvert + timeConvert
+    return dateConvert + timeConvert;
 }
 
 // create a function for calibration
@@ -111,22 +110,23 @@ void checkTime() {
 
 // create function to play reminder sound
 void playSound() {
-    digitalWrite(SOUND, HIGH);
+    /** digitalWrite(SOUND, HIGH);
     delay(10000);  // play sound for 10 seconds
     digitalWrite(SOUND, LOW);
     delay(20000); // wait for 20 seconds
     digitalWrite(SOUND, HIGH);
     delay(10000);  // play sound for 10 seconds
     digitalWrite(SOUND, LOW);
-    delay(20000); // wait for 20 seconds
+    delay(20000); // wait for 20 seconds */
+    println("Ding ding ding! This is the sound !!");
 }
 
 // create function to display medication details
 void displayMedication(int compartment) {
-    Serial.print("Ding ding ding! It's time to take your medication !! On today's menu, we have ");
-    Serial.println(schedule[compartment].name);
-    Serial.print(" : ");
-    Serial.println(schedule[compartment].effect);
+    println("Ding ding ding! It's time to take your medication !! On today's menu, we have ");
+    print(schedule[compartment].name);
+    printf(" : ");
+    printfln(schedule[compartment].effect);
 }
 
 // create function to calculate rotation angle
@@ -136,32 +136,33 @@ int calc(int i) {
 
 // create function to rotate servo motor
 void rotateServo(int angle) {
-    myServo.write(angle);
+    /** myServo.write(angle);
     if (checkMedicationStatus() == 1){
         myServo.write(0);  // reset servo
-    }
+    } */
+   println ("Rotating servo to an angle of: %d", angle);
 }
 
 // initalize system
-void setup() {
+/** void setup() {
     pinMode(SOUND, OUTPUT);
     myServo.attach(SERVO);
     
     Serial.begin(9600); 
-}
+} */
 
 // main code 
 void loop() {
     char input[BUFFER];  // stores incoming serial data from Python script
 
     // only runs if data is available in buffer
-    if (Serial.available()) {
+    // if (Serial.available()) {
         int index = 0;
 
         readSerialData(input);
 
         storeSchedule(input);
-    }
+    // }
 
     // Check if it's time for any medication
     if (timeSet == 1) { // only once device is calibrated
